@@ -1,0 +1,98 @@
+1. feladat
+Filter:
+
+{
+
+  "languages": "English",
+
+  "awards.wins": 2
+
+}
+
+Project:
+
+{
+
+  "title": 1,
+
+  "writers": 1,
+
+  "directors": 1,
+
+  "year": 1,
+
+}
+
+Sort:
+
+
+
+{ "year": -1 }
+Project: 
+
+
+2. feladat
+
+db.users.find(
+  { email: /.*\.com.*/ }, 
+  { name: 1, email: 1, _id: 0 } 
+);
+
+
+3. feladat
+
+db.movies.aggregate([
+
+  {
+
+    $match: { year: { $gt: 1950 } } 
+
+  },
+
+  {
+
+    $group: {
+
+      _id: "$rated", 
+
+      atlag_ido: { $avg: "$runtime" }
+
+    }
+
+  },
+
+  {
+
+    $project: {
+
+      rated: "$_id", 
+
+      atlag_ido: 1,
+
+      _id: 0 
+
+    }
+
+  }
+
+]);
+
+
+4. feladat:
+
+
+
+MATCH (p:Person)-[:ACTED_IN]->(m:Movie)
+WHERE m.released >= 1960
+RETURN p.name AS szereplo_neve, m.title AS film_cime, m.released AS megjelenes_eve
+ORDER BY m.released DESC
+
+
+5. feladat
+
+
+MATCH (p:Person)-[:DIRECTED]->(m:Movie)
+WHERE m.released < 2000
+WITH p, count(*) AS count
+WHERE count > 1
+RETURN p.name, count
